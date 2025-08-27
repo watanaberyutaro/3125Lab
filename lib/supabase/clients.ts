@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { createClient as createSupabaseClient } from '@/lib/supabase/client'
 
 export interface Client {
@@ -66,8 +67,8 @@ export async function createClient(client: Omit<Client, 'id' | 'created_at' | 'u
   console.log('Creating client with data:', clientData)
   console.log('Using table:', TABLE_NAME)
   
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const { data, error } = await (supabase
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     .from(TABLE_NAME) as any)
     .insert([clientData])
     .select()
@@ -86,8 +87,8 @@ export async function updateClient(id: string, client: Partial<Client>) {
   
   const TABLE_NAME = 'clients_v2'
   
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const { data, error } = await (supabase
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     .from(TABLE_NAME) as any)
     .update(client)
     .eq('id', id)

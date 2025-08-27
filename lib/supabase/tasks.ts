@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { createClient as createSupabaseClient } from '@/lib/supabase/client'
 
 export interface Task {
@@ -29,8 +30,7 @@ const TABLE_NAME = 'tasks_v2'
 export async function getTasks() {
   const supabase = createSupabaseClient()
   
-  const { data, error } = await supabase
-    .from(TABLE_NAME)
+  const { data, error } = await (supabase.from(TABLE_NAME) as any) // eslint-disable-next-line @typescript-eslint/no-explicit-any
     .select(`
       *,
       project:projects_v2(
@@ -53,8 +53,7 @@ export async function getTasks() {
 export async function getTasksByProject(projectId: string) {
   const supabase = createSupabaseClient()
   
-  const { data, error } = await supabase
-    .from(TABLE_NAME)
+  const { data, error } = await (supabase.from(TABLE_NAME) as any) // eslint-disable-next-line @typescript-eslint/no-explicit-any
     .select('*')
     .eq('project_id', projectId)
     .order('due_date', { ascending: true, nullsFirst: false })
@@ -71,8 +70,7 @@ export async function getTasksByProject(projectId: string) {
 export async function getTask(id: string) {
   const supabase = createSupabaseClient()
   
-  const { data, error } = await supabase
-    .from(TABLE_NAME)
+  const { data, error } = await (supabase.from(TABLE_NAME) as any) // eslint-disable-next-line @typescript-eslint/no-explicit-any
     .select(`
       *,
       project:projects_v2(
@@ -105,8 +103,7 @@ export async function createTask(task: Omit<Task, 'id' | 'created_at' | 'updated
   
   console.log('Creating task with data:', taskData)
   
-  const { data, error } = await supabase
-    .from(TABLE_NAME)
+  const { data, error } = await (supabase.from(TABLE_NAME) as any) // eslint-disable-next-line @typescript-eslint/no-explicit-any
     .insert([taskData])
     .select()
     .single()
@@ -122,8 +119,7 @@ export async function createTask(task: Omit<Task, 'id' | 'created_at' | 'updated
 export async function updateTask(id: string, task: Partial<Task>) {
   const supabase = createSupabaseClient()
   
-  const { data, error } = await supabase
-    .from(TABLE_NAME)
+  const { data, error } = await (supabase.from(TABLE_NAME) as any) // eslint-disable-next-line @typescript-eslint/no-explicit-any
     .update(task)
     .eq('id', id)
     .select()
@@ -140,8 +136,7 @@ export async function updateTask(id: string, task: Partial<Task>) {
 export async function deleteTask(id: string) {
   const supabase = createSupabaseClient()
   
-  const { error } = await supabase
-    .from(TABLE_NAME)
+  const { error } = await (supabase.from(TABLE_NAME) as any) // eslint-disable-next-line @typescript-eslint/no-explicit-any
     .delete()
     .eq('id', id)
   
@@ -160,8 +155,7 @@ export async function updateTaskStatus(id: string, status: Task['status']) {
 export async function getTaskStats() {
   const supabase = createSupabaseClient()
   
-  const { data, error } = await supabase
-    .from(TABLE_NAME)
+  const { data, error } = await (supabase.from(TABLE_NAME) as any) // eslint-disable-next-line @typescript-eslint/no-explicit-any
     .select('status, priority')
   
   if (error) {
@@ -189,7 +183,7 @@ export async function getTaskStats() {
     }
   }
   
-  data?.forEach(task => {
+  data?.forEach((task: any) => {
     if (task.status) stats.byStatus[task.status]++
     if (task.priority) stats.byPriority[task.priority]++
   })

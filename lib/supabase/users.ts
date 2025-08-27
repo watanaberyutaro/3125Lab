@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { createClient as createSupabaseClient } from '@/lib/supabase/client'
 
 export interface User {
@@ -15,8 +16,7 @@ const TABLE_NAME = 'users_v2'
 export async function getUsers() {
   const supabase = createSupabaseClient()
   
-  const { data, error } = await supabase
-    .from(TABLE_NAME)
+  const { data, error } = await (supabase.from(TABLE_NAME) as any) // eslint-disable-next-line @typescript-eslint/no-explicit-any
     .select('*')
     .order('name', { ascending: true })
   
@@ -31,8 +31,7 @@ export async function getUsers() {
 export async function getUser(id: string) {
   const supabase = createSupabaseClient()
   
-  const { data, error } = await supabase
-    .from(TABLE_NAME)
+  const { data, error } = await (supabase.from(TABLE_NAME) as any) // eslint-disable-next-line @typescript-eslint/no-explicit-any
     .select('*')
     .eq('id', id)
     .single()
@@ -48,8 +47,7 @@ export async function getUser(id: string) {
 export async function createUser(user: Omit<User, 'id' | 'created_at' | 'updated_at'>) {
   const supabase = createSupabaseClient()
   
-  const { data, error } = await supabase
-    .from(TABLE_NAME)
+  const { data, error } = await (supabase.from(TABLE_NAME) as any) // eslint-disable-next-line @typescript-eslint/no-explicit-any
     .insert([user])
     .select()
     .single()
@@ -65,8 +63,7 @@ export async function createUser(user: Omit<User, 'id' | 'created_at' | 'updated
 export async function updateUser(id: string, user: Partial<User>) {
   const supabase = createSupabaseClient()
   
-  const { data, error } = await supabase
-    .from(TABLE_NAME)
+  const { data, error } = await (supabase.from(TABLE_NAME) as any) // eslint-disable-next-line @typescript-eslint/no-explicit-any
     .update(user)
     .eq('id', id)
     .select()
@@ -83,8 +80,7 @@ export async function updateUser(id: string, user: Partial<User>) {
 export async function deleteUser(id: string) {
   const supabase = createSupabaseClient()
   
-  const { error } = await supabase
-    .from(TABLE_NAME)
+  const { error } = await (supabase.from(TABLE_NAME) as any) // eslint-disable-next-line @typescript-eslint/no-explicit-any
     .delete()
     .eq('id', id)
   

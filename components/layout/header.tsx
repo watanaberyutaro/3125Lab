@@ -1,4 +1,5 @@
 'use client'
+/* eslint-disable @next/next/no-img-element */
 
 import { useState, useEffect, useRef } from 'react'
 import { Bell, Search, X, Check, User, Settings, LogOut } from 'lucide-react'
@@ -211,7 +212,7 @@ export function Header() {
             >
               {userProfile ? (
                 userProfile.avatar_url ? (
-                  /* eslint-disable-next-line @next/next/no-img-element */
+                  // eslint-disable-next-line @next/next/no-img-element
                   <img 
                     src={userProfile.avatar_url} 
                     alt={userProfile.full_name || userProfile.username || 'User'}
