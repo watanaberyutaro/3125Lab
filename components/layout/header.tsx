@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect, useRef } from 'react'
-import { Bell, Search, X, Check, User, Settings, LogOut, ChevronDown } from 'lucide-react'
+import { Bell, Search, X, Check, User, Settings, LogOut } from 'lucide-react'
 import { Input } from '@/components/ui/input'
 import { Card } from '@/components/ui/card'
 import { createClient } from '@/lib/supabase/client'
@@ -18,7 +18,13 @@ export function Header() {
   const [showNotifications, setShowNotifications] = useState(false)
   const [showUserMenu, setShowUserMenu] = useState(false)
   const [notificationList, setNotificationList] = useState(notifications)
-  const [userProfile, setUserProfile] = useState<any>(null)
+  const [userProfile, setUserProfile] = useState<{
+    id: string
+    email?: string
+    full_name?: string
+    username?: string
+    avatar_url?: string
+  } | null>(null)
   const router = useRouter()
   const userMenuRef = useRef<HTMLDivElement>(null)
   const notificationRef = useRef<HTMLDivElement>(null)

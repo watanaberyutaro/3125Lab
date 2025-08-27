@@ -5,7 +5,6 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { getProjects, type Project } from '@/lib/supabase/projects'
 import { 
-  DollarSign, 
   TrendingUp, 
   TrendingDown,
   Wallet,

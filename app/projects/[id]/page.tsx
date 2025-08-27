@@ -11,8 +11,6 @@ import {
   ArrowLeft,
   Edit,
   ExternalLink,
-  Calendar,
-  User,
   AlertCircle,
   CheckCircle,
   Clock,
@@ -20,8 +18,6 @@ import {
   Github,
   Globe,
   Server,
-  DollarSign,
-  TrendingUp,
   Wallet
 } from 'lucide-react'
 import Link from 'next/link'

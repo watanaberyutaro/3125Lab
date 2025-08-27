@@ -103,15 +103,6 @@ export default function TasksPage() {
     }
   }
 
-  const getStatusIcon = (status: string) => {
-    switch (status) {
-      case 'todo': return <Circle className="h-4 w-4" />
-      case 'in_progress': return <Clock className="h-4 w-4" />
-      case 'review': return <AlertCircle className="h-4 w-4" />
-      case 'completed': return <CheckCircle className="h-4 w-4" />
-      default: return <Circle className="h-4 w-4" />
-    }
-  }
 
   if (loading) {
     return (
@@ -232,7 +223,7 @@ export default function TasksPage() {
                         <div className="flex items-center gap-2">
                           <select
                             value={task.status}
-                            onChange={(e) => task.id && handleStatusChange(task.id, e.target.value as any)}
+                            onChange={(e) => task.id && handleStatusChange(task.id, e.target.value as 'todo' | 'in_progress' | 'review' | 'completed')}
                             className="text-xs px-1 py-0.5 border border-gray-300 rounded focus:border-black focus:outline-none"
                           >
                             <option value="todo">未着手</option>
@@ -274,7 +265,7 @@ export default function TasksPage() {
                     <div className="flex items-center gap-2">
                       <select
                         value={task.status}
-                        onChange={(e) => task.id && handleStatusChange(task.id, e.target.value as any)}
+                        onChange={(e) => task.id && handleStatusChange(task.id, e.target.value as 'todo' | 'in_progress' | 'review' | 'completed')}
                         className="text-sm px-2 py-1 border border-gray-300 rounded focus:border-black focus:outline-none"
                       >
                         <option value="todo">未着手</option>

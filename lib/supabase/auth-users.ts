@@ -61,7 +61,17 @@ export async function getCurrentUser() {
 }
 
 // profilesテーブルと連携したユーザー管理
-export async function createProfile(userId: string, profileData: any) {
+export async function createProfile(userId: string, profileData: {
+  email?: string
+  full_name?: string
+  username?: string
+  avatar_url?: string
+  phone?: string
+  company?: string
+  department?: string
+  location?: string
+  bio?: string
+}) {
   const supabase = createSupabaseClient()
   
   const { data, error } = await supabase

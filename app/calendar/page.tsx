@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
 import { getTasks } from '@/lib/supabase/tasks'
 import { getProjects } from '@/lib/supabase/projects'
 import type { TaskWithProject } from '@/lib/supabase/tasks'
@@ -14,10 +13,7 @@ import {
   Clock,
   AlertTriangle,
   CheckCircle,
-  FileText,
-  FolderOpen,
-  Circle,
-  AlertCircle
+  FolderOpen
 } from 'lucide-react'
 import Link from 'next/link'
 
@@ -35,13 +31,6 @@ const eventTypeConfig = {
   task: { icon: CheckCircle, color: 'bg-gray-50', label: 'タスク' },
   project_start: { icon: FolderOpen, color: 'bg-white', label: 'プロジェクト開始' },
   project_end: { icon: FolderOpen, color: 'bg-gray-900', label: 'プロジェクト終了' },
-}
-
-const priorityConfig = {
-  urgent: { color: 'border-gray-900 bg-gray-900', textColor: 'text-white' },
-  high: { color: 'border-gray-700 bg-gray-700', textColor: 'text-white' },
-  medium: { color: 'border-gray-500 bg-gray-500', textColor: 'text-white' },
-  low: { color: 'border-gray-300 bg-gray-300', textColor: 'text-gray-800' },
 }
 
 export default function CalendarPage() {

@@ -18,8 +18,6 @@ import {
   Circle,
   FolderOpen,
   Tag,
-  MessageSquare,
-  FileText,
   Building
 } from 'lucide-react'
 import Link from 'next/link'
@@ -90,15 +88,6 @@ export default function TaskDetailPage() {
     }
   }
 
-  const getStatusLabel = (status: string) => {
-    switch (status) {
-      case 'todo': return '未着手'
-      case 'in_progress': return '進行中'
-      case 'review': return 'レビュー'
-      case 'completed': return '完了'
-      default: return status
-    }
-  }
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -195,7 +184,7 @@ export default function TaskDetailPage() {
                     {getStatusIcon(task.status)}
                     <select
                       value={task.status}
-                      onChange={(e) => handleStatusChange(e.target.value as any)}
+                      onChange={(e) => handleStatusChange(e.target.value as 'todo' | 'in_progress' | 'review' | 'completed')}
                       disabled={statusChangeLoading}
                       className={`px-3 py-1 rounded text-sm ${getStatusColor(task.status)} border border-gray-300 focus:border-black focus:outline-none`}
                     >

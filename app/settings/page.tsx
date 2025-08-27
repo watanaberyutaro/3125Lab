@@ -71,7 +71,7 @@ export default function SettingsPage() {
 
   useEffect(() => {
     fetchProfile()
-  }, [])
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   const fetchProfile = async () => {
     setLoading(true)
@@ -91,30 +91,30 @@ export default function SettingsPage() {
       setUserId(user.id)
       
       // プロフィール情報を取得
-      const { data: profile, error } = await supabase
+      const { data: profile } = await supabase
         .from('profiles')
         .select('*')
         .eq('id', user.id)
         .single()
       
-      if (profile) {
+      if (profile && profile !== null) {
         setProfileData({
-          full_name: profile.full_name || '',
-          email: profile.email || user.email || '',
-          phone: profile.phone || '',
-          company: profile.company || '',
-          department: profile.department || '',
-          role: profile.role || '',
-          location: profile.location || '',
-          bio: profile.bio || '',
-          avatar_url: profile.avatar_url || null
+          full_name: (profile as { full_name?: string }).full_name || '',
+          email: (profile as { email?: string }).email || user.email || '',
+          phone: (profile as { phone?: string }).phone || '',
+          company: (profile as { company?: string }).company || '',
+          department: (profile as { department?: string }).department || '',
+          role: (profile as { role?: string }).role || '',
+          location: (profile as { location?: string }).location || '',
+          bio: (profile as { bio?: string }).bio || '',
+          avatar_url: (profile as { avatar_url?: string | null }).avatar_url || null
         })
       } else {
         // プロフィールが存在しない場合、作成
         await createProfile(user.id, user.email)
       }
-    } catch (error) {
-      console.error('Error fetching profile:', error)
+    } catch {
+      console.error('Error fetching profile')
     } finally {
       setLoading(false)
     }
@@ -234,7 +234,7 @@ export default function SettingsPage() {
           let errorMessage = 'Unknown error'
           try {
             errorMessage = JSON.stringify(error, Object.getOwnPropertyNames(error), 2)
-          } catch (e) {
+          } catch {
             errorMessage = String(error)
           }
           console.error('Full error:', errorMessage)
@@ -285,7 +285,7 @@ export default function SettingsPage() {
           let errorMessage = 'Unknown error'
           try {
             errorMessage = JSON.stringify(error, Object.getOwnPropertyNames(error), 2)
-          } catch (e) {
+          } catch {
             errorMessage = String(error)
           }
           console.error('Full error:', errorMessage)
