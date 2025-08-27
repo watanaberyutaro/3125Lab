@@ -184,8 +184,12 @@ export async function getTaskStats() {
   }
   
   data?.forEach((task: any) => {
-    if (task.status) stats.byStatus[task.status]++
-    if (task.priority) stats.byPriority[task.priority]++
+    if (task.status && task.status in stats.byStatus) {
+      stats.byStatus[task.status as keyof typeof stats.byStatus]++
+    }
+    if (task.priority && task.priority in stats.byPriority) {
+      stats.byPriority[task.priority as keyof typeof stats.byPriority]++
+    }
   })
   
   return stats
