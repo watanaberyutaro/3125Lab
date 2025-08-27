@@ -66,8 +66,8 @@ export async function createClient(client: Omit<Client, 'id' | 'created_at' | 'u
   console.log('Creating client with data:', clientData)
   console.log('Using table:', TABLE_NAME)
   
-  const { data, error } = await supabase
-    .from(TABLE_NAME)
+  const { data, error } = await (supabase
+    .from(TABLE_NAME) as any)
     .insert([clientData])
     .select()
     .single()
@@ -85,8 +85,8 @@ export async function updateClient(id: string, client: Partial<Client>) {
   
   const TABLE_NAME = 'clients_v2'
   
-  const { data, error } = await supabase
-    .from(TABLE_NAME)
+  const { data, error } = await (supabase
+    .from(TABLE_NAME) as any)
     .update(client)
     .eq('id', id)
     .select()

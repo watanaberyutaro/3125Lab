@@ -74,8 +74,9 @@ export async function createProfile(userId: string, profileData: {
 }) {
   const supabase = createSupabaseClient()
   
-  const { data, error } = await supabase
-    .from('profiles')
+  const { data, error } = await (supabase
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    .from('profiles') as any)
     .upsert([
       {
         id: userId,

@@ -63,8 +63,11 @@ export function Header() {
       
       if (profile) {
         setUserProfile({
-          ...profile,
-          email: user.email
+          id: user.id,
+          email: user.email,
+          full_name: (profile as { full_name?: string }).full_name,
+          username: (profile as { username?: string }).username,
+          avatar_url: (profile as { avatar_url?: string }).avatar_url
         })
       }
     }
@@ -208,6 +211,7 @@ export function Header() {
             >
               {userProfile ? (
                 userProfile.avatar_url ? (
+                  /* eslint-disable-next-line @next/next/no-img-element */
                   <img 
                     src={userProfile.avatar_url} 
                     alt={userProfile.full_name || userProfile.username || 'User'}

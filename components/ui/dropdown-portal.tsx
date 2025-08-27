@@ -5,7 +5,7 @@ import { createPortal } from 'react-dom'
 
 interface DropdownPortalProps {
   children: React.ReactNode
-  targetRef: React.RefObject<HTMLElement>
+  targetRef: React.RefObject<HTMLElement | null>
   isOpen: boolean
 }
 

@@ -124,8 +124,9 @@ export default function SettingsPage() {
     const supabase = createSupabaseClient()
     
     try {
-      const { data, error } = await supabase
-        .from('profiles')
+      const { data, error } = await (supabase
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        .from('profiles') as any)
         .insert([
           {
             id: userId,
@@ -210,8 +211,9 @@ export default function SettingsPage() {
         }
         console.log('Update data:', updateData)
         
-        const result = await supabase
-          .from('profiles')
+        const result = await (supabase
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          .from('profiles') as any)
           .update(updateData)
           .eq('id', userId)
           .select()
@@ -265,8 +267,9 @@ export default function SettingsPage() {
         }
         console.log('Insert data:', insertData)
         
-        const result = await supabase
-          .from('profiles')
+        const result = await (supabase
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          .from('profiles') as any)
           .insert([insertData])
           .select()
           .single()

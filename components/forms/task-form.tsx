@@ -26,7 +26,7 @@ export function TaskForm({ task, projectId, onClose }: TaskFormProps) {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [projects, setProjects] = useState<Project[]>([])
-  const [users, setUsers] = useState<{ id: string; email: string; full_name?: string }[]>([])
+  const [users, setUsers] = useState<{ id: string; email: string; full_name?: string; department?: string }[]>([])
   
   const [formData, setFormData] = useState({
     project_id: task?.project_id || projectId || '',
