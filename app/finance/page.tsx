@@ -129,7 +129,7 @@ export default function FinancePage() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">総月額収入</CardTitle>
-            <TrendingUp className="h-4 w-4 text-green-600" />
+            <TrendingUp className="h-4 w-4 text-gray-700" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">¥{summary.totalRevenue.toLocaleString()}</div>
@@ -140,7 +140,7 @@ export default function FinancePage() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">総月額支出</CardTitle>
-            <TrendingDown className="h-4 w-4 text-red-600" />
+            <TrendingDown className="h-4 w-4 text-gray-600" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">¥{summary.totalCost.toLocaleString()}</div>
@@ -151,10 +151,10 @@ export default function FinancePage() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">月額利益</CardTitle>
-            <Wallet className="h-4 w-4 text-blue-600" />
+            <Wallet className="h-4 w-4 text-gray-800" />
           </CardHeader>
           <CardContent>
-            <div className={`text-2xl font-bold ${summary.monthlyProfit >= 0 ? 'text-green-700' : 'text-red-700'}`}>
+            <div className={`text-2xl font-bold ${summary.monthlyProfit >= 0 ? 'text-black' : 'text-gray-700'}`}>
               ¥{summary.monthlyProfit.toLocaleString()}
             </div>
             <p className="text-xs text-gray-600">
@@ -166,10 +166,10 @@ export default function FinancePage() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">年間利益予測</CardTitle>
-            <PiggyBank className="h-4 w-4 text-purple-600" />
+            <PiggyBank className="h-4 w-4 text-gray-900" />
           </CardHeader>
           <CardContent>
-            <div className={`text-2xl font-bold ${summary.annualProfit >= 0 ? 'text-green-700' : 'text-red-700'}`}>
+            <div className={`text-2xl font-bold ${summary.annualProfit >= 0 ? 'text-black' : 'text-gray-700'}`}>
               ¥{summary.annualProfit.toLocaleString()}
             </div>
             <p className="text-xs text-gray-600">12ヶ月分の予測</p>
@@ -179,9 +179,9 @@ export default function FinancePage() {
 
       {/* 警告表示 */}
       {filteredProjects.some(p => ((p.monthly_revenue || 0) - (p.monthly_cost || 0)) < 0) && (
-        <Card className="border-red-300 bg-red-50">
+        <Card className="border-gray-400 bg-gray-100">
           <CardHeader>
-            <CardTitle className="text-red-700 flex items-center gap-2">
+            <CardTitle className="text-gray-900 flex items-center gap-2">
               <AlertCircle className="h-5 w-5" />
               赤字プロジェクトがあります
             </CardTitle>
@@ -195,7 +195,7 @@ export default function FinancePage() {
                     <Link href={`/projects/${project.id}`}>
                       <span className="text-sm font-medium hover:underline">{project.name}</span>
                     </Link>
-                    <span className="text-sm text-red-700 font-bold">
+                    <span className="text-sm text-gray-800 font-bold">
                       ¥{((project.monthly_revenue || 0) - (project.monthly_cost || 0)).toLocaleString()}/月
                     </span>
                   </div>
@@ -271,7 +271,7 @@ export default function FinancePage() {
                         <td className="p-2 text-right">
                           {project.monthly_cost ? `¥${project.monthly_cost.toLocaleString()}` : '-'}
                         </td>
-                        <td className={`p-2 text-right font-bold ${monthlyProfit >= 0 ? 'text-green-700' : 'text-red-700'}`}>
+                        <td className={`p-2 text-right font-bold ${monthlyProfit >= 0 ? 'text-black' : 'text-gray-600'}`}>
                           {monthlyProfit !== 0 ? (
                             <span className="flex items-center justify-end gap-1">
                               {monthlyProfit > 0 ? <ArrowUp className="h-3 w-3" /> : <ArrowDown className="h-3 w-3" />}
@@ -279,16 +279,16 @@ export default function FinancePage() {
                             </span>
                           ) : '-'}
                         </td>
-                        <td className={`p-2 text-right font-bold ${annualProfit >= 0 ? 'text-green-700' : 'text-red-700'}`}>
+                        <td className={`p-2 text-right font-bold ${annualProfit >= 0 ? 'text-black' : 'text-gray-600'}`}>
                           {annualProfit !== 0 ? `¥${annualProfit.toLocaleString()}` : '-'}
                         </td>
                         <td className="p-2 text-center">
-                          <span className={`text-xs px-2 py-1 rounded ${
-                            project.status === 'production' ? 'bg-green-100 text-green-800' :
-                            project.status === 'development' ? 'bg-blue-100 text-blue-800' :
-                            project.status === 'maintenance' ? 'bg-yellow-100 text-yellow-800' :
-                            project.status === 'archived' ? 'bg-gray-100 text-gray-600' :
-                            'bg-gray-100 text-gray-800'
+                          <span className={`text-xs px-2 py-1 rounded border ${
+                            project.status === 'production' ? 'bg-gray-900 text-white' :
+                            project.status === 'development' ? 'bg-gray-700 text-white' :
+                            project.status === 'maintenance' ? 'bg-gray-500 text-white' :
+                            project.status === 'archived' ? 'bg-gray-200 text-gray-600' :
+                            'bg-gray-300 text-gray-800 border-gray-400'
                           }`}>
                             {project.status === 'production' ? '本番' :
                              project.status === 'development' ? '開発中' :
@@ -317,10 +317,10 @@ export default function FinancePage() {
                     <td className="p-2 text-right">
                       ¥{filteredProjects.reduce((sum, p) => sum + (p.monthly_cost || 0), 0).toLocaleString()}
                     </td>
-                    <td className={`p-2 text-right ${summary.monthlyProfit >= 0 ? 'text-green-700' : 'text-red-700'}`}>
+                    <td className={`p-2 text-right ${summary.monthlyProfit >= 0 ? 'text-black' : 'text-gray-600'}`}>
                       ¥{filteredProjects.reduce((sum, p) => sum + ((p.monthly_revenue || 0) - (p.monthly_cost || 0)), 0).toLocaleString()}
                     </td>
-                    <td className={`p-2 text-right ${summary.annualProfit >= 0 ? 'text-green-700' : 'text-red-700'}`}>
+                    <td className={`p-2 text-right ${summary.annualProfit >= 0 ? 'text-black' : 'text-gray-600'}`}>
                       ¥{(filteredProjects.reduce((sum, p) => sum + ((p.monthly_revenue || 0) - (p.monthly_cost || 0)), 0) * 12).toLocaleString()}
                     </td>
                     <td></td>
