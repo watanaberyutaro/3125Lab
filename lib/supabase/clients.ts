@@ -106,8 +106,8 @@ export async function updateClient(id: string, client: Partial<Client>) {
   
   const TABLE_NAME = 'clients_v2'
   
-  // statusフィールドを確実に除外
-  const { status, id, created_at, updated_at, ...cleanedClient } = client as any
+  // statusフィールドを確実に除外（idは関数パラメータと重複するため別名に）
+  const { status, id: clientId, created_at, updated_at, ...cleanedClient } = client as any
   
   // デバッグ用ログ
   if (status !== undefined) {
