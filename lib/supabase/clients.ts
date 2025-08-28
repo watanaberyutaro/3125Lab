@@ -59,17 +59,23 @@ export async function createClient(client: Omit<Client, 'id' | 'created_at' | 'u
   
   const { data: { user } } = await supabase.auth.getUser()
   
-  // v3テーブルではstatusフィールドの問題はないはずだが、念のため確認
-  console.log('Original client data received:', client)
-  console.log('Keys in client data:', Object.keys(client))
+  // statusフィールドを確実に除外
+  const { status, ...cleanedClient } = client as any
   
-  // statusフィールドがあるか確認
-  if ('status' in (client as any)) {
-    console.warn('WARNING: status field detected in client data')
+  // デバッグ用ログ
+  if (status !== undefined) {
+    console.warn('Status field detected and removed:', status)
   }
   
   const clientData = {
-    ...client,
+    name: cleanedClient.name,
+    company_name: cleanedClient.company_name || null,
+    email: cleanedClient.email || null,
+    phone: cleanedClient.phone || null,
+    address: cleanedClient.address || null,
+    website: cleanedClient.website || null,
+    contact_person: cleanedClient.contact_person || null,
+    notes: cleanedClient.notes || null,
     created_by: user?.id || null
   }
   
@@ -100,19 +106,31 @@ export async function updateClient(id: string, client: Partial<Client>) {
   
   const TABLE_NAME = 'clients_v2'
   
-  // v3テーブルではstatusフィールドの問題はないはずだが、念のため確認
-  console.log('Update - Original client data:', client)
-  console.log('Update - Keys in client data:', Object.keys(client))
+  // statusフィールドを確実に除外
+  const { status, id, created_at, updated_at, ...cleanedClient } = client as any
   
-  // statusフィールドがあるか確認
-  if ('status' in (client as any)) {
-    console.warn('WARNING: status field detected in update data')
+  // デバッグ用ログ
+  if (status !== undefined) {
+    console.warn('Status field detected and removed from update:', status)
   }
+  
+  // 明示的にフィールドを指定してクリーンなデータを作成
+  const updateData: any = {}
+  if (cleanedClient.name !== undefined) updateData.name = cleanedClient.name
+  if (cleanedClient.company_name !== undefined) updateData.company_name = cleanedClient.company_name
+  if (cleanedClient.email !== undefined) updateData.email = cleanedClient.email
+  if (cleanedClient.phone !== undefined) updateData.phone = cleanedClient.phone
+  if (cleanedClient.address !== undefined) updateData.address = cleanedClient.address
+  if (cleanedClient.website !== undefined) updateData.website = cleanedClient.website
+  if (cleanedClient.contact_person !== undefined) updateData.contact_person = cleanedClient.contact_person
+  if (cleanedClient.notes !== undefined) updateData.notes = cleanedClient.notes
+  
+  console.log('Update data:', JSON.stringify(updateData, null, 2))
   
   const { data, error } = await (supabase
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     .from(TABLE_NAME) as any)
-    .update(client)
+    .update(updateData)
     .eq('id', id)
     .select()
     .single()
