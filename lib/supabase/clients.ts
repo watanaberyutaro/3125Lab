@@ -59,24 +59,25 @@ export async function createClient(client: Omit<Client, 'id' | 'created_at' | 'u
   
   const { data: { user } } = await supabase.auth.getUser()
   
-  // statusフィールドを確実に除外
-  const { status, ...cleanedClient } = client as any
-  
-  // デバッグ用ログ
-  if (status !== undefined) {
-    console.warn('Status field detected and removed:', status)
+  // 許可されたフィールドのみを明示的に取得（それ以外は完全に無視）
+  const clientData = {
+    name: client.name,
+    company_name: client.company_name || null,
+    email: client.email || null,
+    phone: client.phone || null,
+    address: client.address || null,
+    website: client.website || null,
+    contact_person: client.contact_person || null,
+    notes: client.notes || null,
+    created_by: user?.id || null
   }
   
-  const clientData = {
-    name: cleanedClient.name,
-    company_name: cleanedClient.company_name || null,
-    email: cleanedClient.email || null,
-    phone: cleanedClient.phone || null,
-    address: cleanedClient.address || null,
-    website: cleanedClient.website || null,
-    contact_person: cleanedClient.contact_person || null,
-    notes: cleanedClient.notes || null,
-    created_by: user?.id || null
+  // デバッグ: 除外されたフィールドを確認
+  const providedFields = Object.keys(client)
+  const allowedFields = ['name', 'company_name', 'email', 'phone', 'address', 'website', 'contact_person', 'notes']
+  const excludedFields = providedFields.filter(key => !allowedFields.includes(key))
+  if (excludedFields.length > 0) {
+    console.warn('Excluded fields from insert:', excludedFields)
   }
   
   console.log('Final data to insert:', JSON.stringify(clientData, null, 2))
@@ -106,26 +107,24 @@ export async function updateClient(id: string, client: Partial<Client>) {
   
   const TABLE_NAME = 'clients_v2'
   
-  // statusフィールドを確実に除外（idは関数パラメータと重複するため別名に）
-  const { status, id: clientId, created_at, updated_at, ...cleanedClient } = client as any
+  // 許可されたフィールドのみを明示的に取得（それ以外は完全に無視）
+  const allowedFields = ['name', 'company_name', 'email', 'phone', 'address', 'website', 'contact_person', 'notes']
+  const updateData: any = {}
   
-  // デバッグ用ログ
-  if (status !== undefined) {
-    console.warn('Status field detected and removed from update:', status)
+  // 許可されたフィールドのみをコピー
+  for (const field of allowedFields) {
+    if (field in client && (client as any)[field] !== undefined) {
+      updateData[field] = (client as any)[field]
+    }
   }
   
-  // 明示的にフィールドを指定してクリーンなデータを作成
-  const updateData: any = {}
-  if (cleanedClient.name !== undefined) updateData.name = cleanedClient.name
-  if (cleanedClient.company_name !== undefined) updateData.company_name = cleanedClient.company_name
-  if (cleanedClient.email !== undefined) updateData.email = cleanedClient.email
-  if (cleanedClient.phone !== undefined) updateData.phone = cleanedClient.phone
-  if (cleanedClient.address !== undefined) updateData.address = cleanedClient.address
-  if (cleanedClient.website !== undefined) updateData.website = cleanedClient.website
-  if (cleanedClient.contact_person !== undefined) updateData.contact_person = cleanedClient.contact_person
-  if (cleanedClient.notes !== undefined) updateData.notes = cleanedClient.notes
+  // デバッグ: 除外されたフィールドを確認
+  const excludedFields = Object.keys(client).filter(key => !allowedFields.includes(key))
+  if (excludedFields.length > 0) {
+    console.warn('Excluded fields from update:', excludedFields)
+  }
   
-  console.log('Update data:', JSON.stringify(updateData, null, 2))
+  console.log('Final update data (only allowed fields):', JSON.stringify(updateData, null, 2))
   
   const { data, error } = await (supabase
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
