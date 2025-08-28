@@ -67,7 +67,9 @@ export async function createClient(client: Omit<Client, 'id' | 'created_at' | 'u
     created_by: user?.id || null
   }
   
-  console.log('Creating client with data:', clientData)
+  console.log('Original client data received:', client)
+  console.log('Cleaned client data (status removed):', cleanClient)
+  console.log('Final data to insert:', JSON.stringify(clientData, null, 2))
   console.log('Using table:', TABLE_NAME)
   
   const { data, error } = await (supabase
@@ -78,8 +80,11 @@ export async function createClient(client: Omit<Client, 'id' | 'created_at' | 'u
     .single()
   
   if (error) {
-    console.error('Error creating client:', error.message, error.details, error.hint)
-    console.error('Full error object:', error)
+    console.error('Error creating client:', error.message || error)
+    console.error('Error details:', error.details)
+    console.error('Error hint:', error.hint)
+    console.error('Error code:', error.code)
+    console.error('Full error object:', JSON.stringify(error, null, 2))
     throw error
   }
   
@@ -94,6 +99,9 @@ export async function updateClient(id: string, client: Partial<Client>) {
   // statusフィールドを除外して、テーブル定義に合わせる
   const { status, ...cleanClient } = client as any
   
+  console.log('Update - Original client data:', client)
+  console.log('Update - Cleaned data (status removed):', cleanClient)
+  
   const { data, error } = await (supabase
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     .from(TABLE_NAME) as any)
@@ -103,8 +111,11 @@ export async function updateClient(id: string, client: Partial<Client>) {
     .single()
   
   if (error) {
-    console.error('Error updating client:', error)
-    console.error('Full error object:', error)
+    console.error('Error updating client:', error.message || error)
+    console.error('Error details:', error.details)
+    console.error('Error hint:', error.hint)
+    console.error('Error code:', error.code)
+    console.error('Full error object:', JSON.stringify(error, null, 2))
     throw error
   }
   
