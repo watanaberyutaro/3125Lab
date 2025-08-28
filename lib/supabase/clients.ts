@@ -57,18 +57,19 @@ export async function createClient(client: Omit<Client, 'id' | 'created_at' | 'u
   // シンプルに必要なフィールドのみを送信
   const insertData = {
     name: client.name,
-    company_name: client.company_name,
-    email: client.email,
-    phone: client.phone,
-    address: client.address,
-    website: client.website,
-    contact_person: client.contact_person,
-    notes: client.notes,
-    created_by: user?.id
+    company_name: client.company_name || null,
+    email: client.email || null,
+    phone: client.phone || null,
+    address: client.address || null,
+    website: client.website || null,
+    contact_person: client.contact_person || null,
+    notes: client.notes || null,
+    created_by: user?.id || null
   }
   
-  const { data, error } = await supabase
-    .from(TABLE_NAME)
+  const { data, error } = await (supabase
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    .from(TABLE_NAME) as any)
     .insert([insertData])
     .select()
     .single()
@@ -85,10 +86,12 @@ export async function updateClient(id: string, client: Partial<Client>) {
   const supabase = createSupabaseClient()
   
   // idとタイムスタンプを除外
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { id: _, created_at, updated_at, ...updateData } = client
   
-  const { data, error } = await supabase
-    .from(TABLE_NAME)
+  const { data, error } = await (supabase
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    .from(TABLE_NAME) as any)
     .update(updateData)
     .eq('id', id)
     .select()
