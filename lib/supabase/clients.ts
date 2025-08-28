@@ -18,7 +18,7 @@ export interface Client {
 export async function getClients() {
   const supabase = createSupabaseClient()
   
-  const TABLE_NAME = 'clients_v2' // RLS問題を回避
+  const TABLE_NAME = 'clients_v3' // v3に変更（status問題を回避）
   
   const { data, error } = await supabase
     .from(TABLE_NAME)
@@ -36,7 +36,7 @@ export async function getClients() {
 export async function getClient(id: string) {
   const supabase = createSupabaseClient()
   
-  const TABLE_NAME = 'clients_v2'
+  const TABLE_NAME = 'clients_v3'
   
   const { data, error } = await supabase
     .from(TABLE_NAME)
@@ -55,20 +55,24 @@ export async function getClient(id: string) {
 export async function createClient(client: Omit<Client, 'id' | 'created_at' | 'updated_at'>) {
   const supabase = createSupabaseClient()
   
-  const TABLE_NAME = 'clients_v2'
+  const TABLE_NAME = 'clients_v3'
   
   const { data: { user } } = await supabase.auth.getUser()
   
-  // statusフィールドを除外して、テーブル定義に合わせる
-  const { status, ...cleanClient } = client as any
+  // v3テーブルではstatusフィールドの問題はないはずだが、念のため確認
+  console.log('Original client data received:', client)
+  console.log('Keys in client data:', Object.keys(client))
+  
+  // statusフィールドがあるか確認
+  if ('status' in (client as any)) {
+    console.warn('WARNING: status field detected in client data')
+  }
   
   const clientData = {
-    ...cleanClient,
+    ...client,
     created_by: user?.id || null
   }
   
-  console.log('Original client data received:', client)
-  console.log('Cleaned client data (status removed):', cleanClient)
   console.log('Final data to insert:', JSON.stringify(clientData, null, 2))
   console.log('Using table:', TABLE_NAME)
   
@@ -94,18 +98,21 @@ export async function createClient(client: Omit<Client, 'id' | 'created_at' | 'u
 export async function updateClient(id: string, client: Partial<Client>) {
   const supabase = createSupabaseClient()
   
-  const TABLE_NAME = 'clients_v2'
+  const TABLE_NAME = 'clients_v3'
   
-  // statusフィールドを除外して、テーブル定義に合わせる
-  const { status, ...cleanClient } = client as any
-  
+  // v3テーブルではstatusフィールドの問題はないはずだが、念のため確認
   console.log('Update - Original client data:', client)
-  console.log('Update - Cleaned data (status removed):', cleanClient)
+  console.log('Update - Keys in client data:', Object.keys(client))
+  
+  // statusフィールドがあるか確認
+  if ('status' in (client as any)) {
+    console.warn('WARNING: status field detected in update data')
+  }
   
   const { data, error } = await (supabase
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     .from(TABLE_NAME) as any)
-    .update(cleanClient)
+    .update(client)
     .eq('id', id)
     .select()
     .single()
@@ -125,7 +132,7 @@ export async function updateClient(id: string, client: Partial<Client>) {
 export async function deleteClient(id: string) {
   const supabase = createSupabaseClient()
   
-  const TABLE_NAME = 'clients_v2'
+  const TABLE_NAME = 'clients_v3'
   
   const { error } = await supabase
     .from(TABLE_NAME)
