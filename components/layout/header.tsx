@@ -88,21 +88,23 @@ export function Header() {
     setShowNotifications(false)
     
     // 通知タイプに応じて遷移先を決定
-    const notification = notificationList.find(n => n.id === id)
-    if (notification) {
-      // プロジェクト関連の通知ならプロジェクトページへ
-      if (notification.message.includes('プラットフォーム')) {
-        router.push('/projects')
+    setTimeout(() => {
+      const notification = notificationList.find(n => n.id === id)
+      if (notification) {
+        // プロジェクト関連の通知ならプロジェクトページへ
+        if (notification.message.includes('プラットフォーム')) {
+          router.push('/projects')
+        }
+        // タスク関連の通知ならタスクページへ
+        else if (notification.title.includes('タスク')) {
+          router.push('/tasks')
+        }
+        // ドメイン関連の通知なら設定ページへ
+        else if (notification.title.includes('ドメイン')) {
+          router.push('/domains')
+        }
       }
-      // タスク関連の通知ならタスクページへ
-      else if (notification.title.includes('タスク')) {
-        router.push('/tasks')
-      }
-      // ドメイン関連の通知なら設定ページへ
-      else if (notification.title.includes('ドメイン')) {
-        router.push('/domains')
-      }
-    }
+    }, 100)
   }
   
   const markAllAsRead = () => {
@@ -238,9 +240,12 @@ export function Header() {
                     </div>
                   )}
                   <button
-                    onClick={() => {
+                    onClick={(e) => {
+                      e.preventDefault()
                       setShowUserMenu(false)
-                      router.push('/settings')
+                      setTimeout(() => {
+                        router.push('/settings')
+                      }, 100)
                     }}
                     className="flex items-center gap-2 px-4 py-2 text-sm hover:bg-gray-100 transition-colors w-full text-left"
                   >
