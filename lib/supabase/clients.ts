@@ -59,8 +59,11 @@ export async function createClient(client: Omit<Client, 'id' | 'created_at' | 'u
   
   const { data: { user } } = await supabase.auth.getUser()
   
+  // statusフィールドを除外して、テーブル定義に合わせる
+  const { status, ...cleanClient } = client as any
+  
   const clientData = {
-    ...client,
+    ...cleanClient,
     created_by: user?.id || null
   }
   
@@ -76,6 +79,7 @@ export async function createClient(client: Omit<Client, 'id' | 'created_at' | 'u
   
   if (error) {
     console.error('Error creating client:', error.message, error.details, error.hint)
+    console.error('Full error object:', error)
     throw error
   }
   
@@ -87,16 +91,20 @@ export async function updateClient(id: string, client: Partial<Client>) {
   
   const TABLE_NAME = 'clients_v2'
   
+  // statusフィールドを除外して、テーブル定義に合わせる
+  const { status, ...cleanClient } = client as any
+  
   const { data, error } = await (supabase
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     .from(TABLE_NAME) as any)
-    .update(client)
+    .update(cleanClient)
     .eq('id', id)
     .select()
     .single()
   
   if (error) {
     console.error('Error updating client:', error)
+    console.error('Full error object:', error)
     throw error
   }
   
