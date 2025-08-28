@@ -1,5 +1,6 @@
-import { redirect } from 'next/navigation'
+// This page is handled by middleware.ts
+// It will redirect to either /auth/login or /dashboard based on authentication status
 
 export default function Home() {
-  redirect('/dashboard')
+  return null
 }

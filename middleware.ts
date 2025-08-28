@@ -1,15 +1,8 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
+import { createServerClient } from '@supabase/ssr'
 
 export async function middleware(request: NextRequest) {
-  // 一時的に認証チェックをスキップしてデバッグ
-  // すべてのリクエストをそのまま通す
-  return NextResponse.next()
-  
-  /* 
-  // 認証チェックのコード（後で有効化）
-  import { createServerClient } from '@supabase/ssr'
-  
   let response = NextResponse.next({
     request: {
       headers: request.headers,
@@ -39,18 +32,28 @@ export async function middleware(request: NextRequest) {
 
   const { data: { user } } = await supabase.auth.getUser()
 
-  // Protect routes
+  // ルートページへのアクセス時の処理
+  if (request.nextUrl.pathname === '/') {
+    if (user) {
+      // ログイン済みの場合はダッシュボードへリダイレクト
+      return NextResponse.redirect(new URL('/dashboard', request.url))
+    } else {
+      // 未ログインの場合はログインページへリダイレクト
+      return NextResponse.redirect(new URL('/auth/login', request.url))
+    }
+  }
+
+  // 保護されたルートへのアクセス時の処理
   if (!user && !request.nextUrl.pathname.startsWith('/auth')) {
     return NextResponse.redirect(new URL('/auth/login', request.url))
   }
 
-  // Redirect to dashboard if user is logged in and trying to access auth pages
+  // ログイン済みユーザーが認証ページにアクセスした場合
   if (user && request.nextUrl.pathname.startsWith('/auth')) {
     return NextResponse.redirect(new URL('/dashboard', request.url))
   }
 
   return response
-  */
 }
 
 export const config = {
