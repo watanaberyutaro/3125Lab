@@ -35,7 +35,18 @@ EXECUTE FUNCTION simple_update_updated_at();
 ALTER TABLE public.clients_v2 DISABLE ROW LEVEL SECURITY;
 
 -- 5. すべてのポリシーを削除
-DROP POLICY IF EXISTS ALL ON public.clients_v2;
+DO $$
+DECLARE
+    policy_record RECORD;
+BEGIN
+    FOR policy_record IN 
+        SELECT policyname 
+        FROM pg_policies 
+        WHERE tablename = 'clients_v2'
+    LOOP
+        EXECUTE 'DROP POLICY IF EXISTS ' || policy_record.policyname || ' ON public.clients_v2';
+    END LOOP;
+END $$;
 
 -- 6. 権限を再設定
 GRANT ALL ON public.clients_v2 TO anon;
