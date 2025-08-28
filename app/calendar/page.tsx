@@ -167,11 +167,11 @@ export default function CalendarPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold">カレンダー</h1>
-        <p className="text-gray-600 mt-1">タスクとプロジェクトのスケジュール管理</p>
+        <h1 className="text-2xl sm:text-3xl font-bold">カレンダー</h1>
+        <p className="text-sm sm:text-base text-gray-600 mt-1">タスクとプロジェクトのスケジュール管理</p>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-3 sm:gap-6">
         <div className="lg:col-span-3">
           <Card>
             <CardHeader>
@@ -197,10 +197,11 @@ export default function CalendarPage() {
               </div>
             </CardHeader>
             <CardContent>
-              <div className="grid grid-cols-7 gap-1 mb-2">
+              <div className="grid grid-cols-7 gap-0.5 sm:gap-1 mb-2">
                 {dayNames.map((day) => (
-                  <div key={day} className="p-2 text-center text-sm font-medium text-gray-600">
-                    {day}
+                  <div key={day} className="p-1 sm:p-2 text-center text-xs sm:text-sm font-medium text-gray-600">
+                    <span className="hidden sm:inline">{day}</span>
+                    <span className="sm:hidden">{day.charAt(0)}</span>
                   </div>
                 ))}
               </div>
@@ -218,21 +219,21 @@ export default function CalendarPage() {
                     <div
                       key={index}
                       className={`
-                        min-h-[80px] p-1 border rounded cursor-pointer transition-colors
+                        min-h-[50px] sm:min-h-[80px] p-0.5 sm:p-1 border rounded cursor-pointer transition-colors
                         ${isCurrentMonth(day) ? 'bg-white' : 'bg-gray-50 text-gray-400'}
-                        ${isToday(day) ? 'bg-gray-300 border-black' : 'border-black'}
+                        ${isToday(day) ? 'bg-gray-300 border-black' : 'border-gray-300'}
                         ${isSelected && !isToday(day) ? 'bg-gray-100 border-black' : ''}
                         ${!isToday(day) ? 'hover:bg-gray-50' : 'hover:bg-gray-400'}
                       `}
                       onClick={() => setSelectedDate(dateString)}
                     >
                       <div className={`
-                        text-sm font-medium mb-1
+                        text-xs sm:text-sm font-medium mb-0.5 sm:mb-1
                         ${isToday(day) ? 'text-black' : ''}
                       `}>
                         {day.getDate()}
                       </div>
-                      <div className="space-y-1">
+                      <div className="space-y-0.5 sm:space-y-1 hidden sm:block">
                         {dayEvents.slice(0, 2).map((event) => {
                           const config = eventTypeConfig[event.type]
                           const getColor = () => {
@@ -254,7 +255,7 @@ export default function CalendarPage() {
                             <Link key={event.id} href={event.url}>
                               <div
                                 className={`
-                                  text-xs px-1 py-0.5 rounded truncate cursor-pointer hover:opacity-80
+                                  text-xs px-0.5 sm:px-1 py-0.5 rounded truncate cursor-pointer hover:opacity-80
                                   ${getColor()}
                                 `}
                                 title={event.title}
@@ -278,12 +279,13 @@ export default function CalendarPage() {
           </Card>
         </div>
 
-        <div className="space-y-6">
+        <div className="space-y-3 sm:space-y-6">
           <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center text-lg">
+            <CardHeader className="pb-3">
+              <CardTitle className="flex items-center text-base sm:text-lg">
                 <Clock className="mr-2 h-4 w-4" />
-                今日の予定
+                <span className="hidden sm:inline">今日の予定</span>
+                <span className="sm:hidden">予定</span>
               </CardTitle>
             </CardHeader>
             <CardContent>

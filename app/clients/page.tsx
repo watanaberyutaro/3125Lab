@@ -10,8 +10,7 @@ import { getClients, deleteClient as deleteClientApi } from '@/lib/supabase/clie
 import type { Client } from '@/lib/supabase/clients'
 import { 
   Plus, 
-  Search, 
-  MoreVertical,
+  Search,
   Mail,
   Phone,
   Building,
@@ -76,23 +75,23 @@ export default function ClientsPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-center">
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
         <div>
-          <h1 className="text-3xl font-bold">クライアント</h1>
-          <p className="text-gray-600 mt-1">クライアント情報と関係を管理</p>
+          <h1 className="text-2xl sm:text-3xl font-bold">クライアント</h1>
+          <p className="text-sm sm:text-base text-gray-600 mt-1">クライアント情報と関係を管理</p>
         </div>
-        <Button className="flex items-center gap-2" onClick={() => setShowModal(true)}>
+        <Button className="flex items-center justify-center gap-2 w-full sm:w-auto" onClick={() => setShowModal(true)}>
           <Plus className="h-4 w-4" />
-          新規クライアント
+          <span>新規クライアント</span>
         </Button>
       </div>
 
-      <div className="relative max-w-md">
+      <div className="relative w-full sm:max-w-md">
         <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
         <Input
           type="search"
           placeholder="クライアントを検索..."
-          className="pl-10"
+          className="pl-10 w-full"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
@@ -103,58 +102,56 @@ export default function ClientsPage() {
           <div className="text-gray-500">読み込み中...</div>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 md:gap-6">
           {filteredClients.map((client) => (
             <Card key={client.id} className="hover:border-gray-400 transition-colors">
-              <CardHeader>
+              <CardHeader className="pb-3">
                 <div className="flex justify-between items-start">
-                  <div className="space-y-1">
-                    <CardTitle className="text-lg flex items-center gap-2">
-                      <Building className="h-4 w-4" />
-                      {client.company_name || client.name}
+                  <div className="space-y-1 flex-1">
+                    <CardTitle className="text-base sm:text-lg flex items-center gap-2">
+                      <Building className="h-4 w-4 flex-shrink-0" />
+                      <span className="line-clamp-1">{client.company_name || client.name}</span>
                     </CardTitle>
-                    <p className="text-sm text-gray-600">{client.contact_person || client.name}</p>
+                    <p className="text-xs sm:text-sm text-gray-600">{client.contact_person || client.name}</p>
                 </div>
-                <button className="text-gray-400 hover:text-gray-600">
-                  <MoreVertical className="h-5 w-5" />
-                </button>
               </div>
             </CardHeader>
-            <CardContent className="space-y-4">
+            <CardContent className="space-y-3 pt-0">
               <div className="space-y-2">
-                <div className="flex items-center gap-2 text-sm text-gray-600">
-                  <Mail className="h-4 w-4" />
-                  <span>{client.email || 'メールなし'}</span>
+                <div className="flex items-start gap-2 text-xs sm:text-sm text-gray-600">
+                  <Mail className="h-3.5 sm:h-4 w-3.5 sm:w-4 mt-0.5 flex-shrink-0" />
+                  <span className="break-all">{client.email || 'メールなし'}</span>
                 </div>
-                <div className="flex items-center gap-2 text-sm text-gray-600">
-                  <Phone className="h-4 w-4" />
+                <div className="flex items-start gap-2 text-xs sm:text-sm text-gray-600">
+                  <Phone className="h-3.5 sm:h-4 w-3.5 sm:w-4 mt-0.5 flex-shrink-0" />
                   <span>{client.phone || '電話番号なし'}</span>
                 </div>
-                <div className="flex items-center gap-2 text-sm text-gray-600">
-                  <Building className="h-4 w-4" />
-                  <span>{client.address || '住所なし'}</span>
+                <div className="flex items-start gap-2 text-xs sm:text-sm text-gray-600">
+                  <Building className="h-3.5 sm:h-4 w-3.5 sm:w-4 mt-0.5 flex-shrink-0" />
+                  <span className="line-clamp-2">{client.address || '住所なし'}</span>
                 </div>
               </div>
 
               {client.notes && (
-                <div className="pt-3 border-t border-black">
-                  <p className="text-gray-600 text-sm">備考</p>
-                  <p className="text-sm">{client.notes}</p>
+                <div className="pt-2 border-t border-gray-200">
+                  <p className="text-gray-600 text-xs sm:text-sm font-medium">備考</p>
+                  <p className="text-xs sm:text-sm line-clamp-2">{client.notes}</p>
                 </div>
               )}
 
-              <div className="flex gap-2 pt-2 border-t border-black">
-                <Button variant="ghost" size="sm" className="flex items-center gap-1 text-xs">
+              <div className="flex flex-wrap gap-1 pt-2 border-t border-gray-200">
+                <Button variant="ghost" size="sm" className="flex items-center justify-center gap-1 text-xs flex-1 sm:flex-initial px-2 py-1">
                   <FileText className="h-3 w-3" />
-                  契約書
+                  <span className="hidden sm:inline">契約書</span>
+                  <span className="sm:hidden">書類</span>
                 </Button>
-                <Button variant="ghost" size="sm" className="flex items-center gap-1 text-xs" onClick={() => handleEdit(client)}>
+                <Button variant="ghost" size="sm" className="flex items-center justify-center gap-1 text-xs flex-1 sm:flex-initial px-2 py-1" onClick={() => handleEdit(client)}>
                   <Edit className="h-3 w-3" />
-                  編集
+                  <span className="hidden sm:inline">編集</span>
                 </Button>
-                <Button variant="ghost" size="sm" className="flex items-center gap-1 text-xs text-gray-900 hover:text-gray-700" onClick={() => client.id && handleDelete(client.id)}>
+                <Button variant="ghost" size="sm" className="flex items-center justify-center gap-1 text-xs text-gray-900 hover:text-gray-700 flex-1 sm:flex-initial px-2 py-1" onClick={() => client.id && handleDelete(client.id)}>
                   <Trash2 className="h-3 w-3" />
-                  削除
+                  <span className="hidden sm:inline">削除</span>
                 </Button>
               </div>
             </CardContent>

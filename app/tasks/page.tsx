@@ -27,13 +27,13 @@ const columns = [
   { id: 'todo', title: '未着手', color: 'bg-gray-100', icon: Circle },
   { id: 'in_progress', title: '進行中', color: 'bg-gray-50', icon: Clock },
   { id: 'review', title: 'レビュー', color: 'bg-gray-50', icon: AlertCircle },
-  { id: 'completed', title: '完了', color: 'bg-gray-100', icon: CheckCircle },
 ]
 
 export default function TasksPage() {
   const [tasks, setTasks] = useState<TaskWithProject[]>([])
   const [searchTerm, setSearchTerm] = useState('')
   const [viewMode, setViewMode] = useState<'board' | 'list'>('board')
+  const [showCompleted, setShowCompleted] = useState(false)
   const [isTaskModalOpen, setIsTaskModalOpen] = useState(false)
   const [editingTask, setEditingTask] = useState<TaskWithProject | undefined>(undefined)
   const [loading, setLoading] = useState(true)
@@ -87,10 +87,20 @@ export default function TasksPage() {
 
   const filteredTasks = tasks.filter(task => {
     const searchLower = searchTerm.toLowerCase()
-    return task.title.toLowerCase().includes(searchLower) ||
+    const matchesSearch = task.title.toLowerCase().includes(searchLower) ||
            task.project?.name?.toLowerCase().includes(searchLower) ||
            task.assignee?.toLowerCase().includes(searchLower) ||
            task.description?.toLowerCase().includes(searchLower)
+    
+    // 完了タスクの表示/非表示
+    if (!showCompleted && task.status === 'completed') {
+      return false
+    }
+    if (showCompleted && task.status !== 'completed') {
+      return false
+    }
+    
+    return matchesSearch
   })
 
   const getPriorityColor = (priority: string) => {
@@ -116,19 +126,45 @@ export default function TasksPage() {
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
         <div>
-          <h1 className="text-2xl md:text-3xl font-bold">タスク</h1>
-          <p className="text-sm md:text-base text-gray-600 mt-1">プロジェクトタスクを追跡・管理</p>
+          <h1 className="text-2xl md:text-3xl font-bold">{showCompleted ? '完了タスク' : 'タスク'}</h1>
+          <p className="text-sm md:text-base text-gray-600 mt-1">
+            {showCompleted ? '完了したタスクの一覧' : 'プロジェクトタスクを追跡・管理'}
+          </p>
         </div>
-        <Button 
-          onClick={() => setIsTaskModalOpen(true)}
-          className="flex items-center gap-2 w-full sm:w-auto"
-        >
-          <Plus className="h-4 w-4" />
-          新規タスク
-        </Button>
+        <div className="flex gap-2">
+          <Button
+            onClick={() => setShowCompleted(!showCompleted)}
+            variant="outline"
+            className="flex items-center gap-2"
+          >
+            {showCompleted ? (
+              <>
+                <Circle className="h-4 w-4" />
+                <span className="hidden sm:inline">未完了タスク</span>
+                <span className="sm:hidden">未完了</span>
+              </>
+            ) : (
+              <>
+                <CheckCircle className="h-4 w-4" />
+                <span className="hidden sm:inline">完了タスク</span>
+                <span className="sm:hidden">完了</span>
+              </>
+            )}
+          </Button>
+          {!showCompleted && (
+            <Button 
+              onClick={() => setIsTaskModalOpen(true)}
+              className="flex items-center gap-2"
+            >
+              <Plus className="h-4 w-4" />
+              <span className="hidden sm:inline">新規タスク</span>
+              <span className="sm:hidden">新規</span>
+            </Button>
+          )}
+        </div>
       </div>
 
-      <div className="flex gap-4 items-center">
+      <div className="flex flex-col sm:flex-row gap-3">
         <div className="relative flex-1 max-w-md">
           <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
           <Input
@@ -142,29 +178,31 @@ export default function TasksPage() {
         <div className="flex gap-2">
           <button
             onClick={() => setViewMode('board')}
-            className={`px-3 py-1 text-sm transition-colors ${
+            className={`px-3 py-1 text-sm transition-colors rounded-md ${
               viewMode === 'board' 
                 ? 'bg-gray-900 text-white' 
                 : 'bg-white text-gray-600 hover:bg-gray-100 border border-black'
             }`}
           >
-            ボード
+            <span className="hidden sm:inline">ボード</span>
+            <span className="sm:hidden">📋</span>
           </button>
           <button
             onClick={() => setViewMode('list')}
-            className={`px-3 py-1 text-sm transition-colors ${
+            className={`px-3 py-1 text-sm transition-colors rounded-md ${
               viewMode === 'list' 
                 ? 'bg-gray-900 text-white' 
                 : 'bg-white text-gray-600 hover:bg-gray-100 border border-black'
             }`}
           >
-            リスト
+            <span className="hidden sm:inline">リスト</span>
+            <span className="sm:hidden">📝</span>
           </button>
         </div>
       </div>
 
-      {viewMode === 'board' ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6">
+      {viewMode === 'board' && !showCompleted ? (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6">
           {columns.map((column) => (
             <div key={column.id} className="space-y-3">
               <div className={`p-3 ${column.color} rounded-t`}>
@@ -181,7 +219,7 @@ export default function TasksPage() {
                   .filter(task => task.status === column.id)
                   .map((task) => (
                     <Card key={task.id} className="group hover:border-gray-400 transition-colors">
-                      <CardContent className="p-4 space-y-3">
+                      <CardContent className="p-3 sm:p-4 space-y-2 sm:space-y-3">
                         <div className="space-y-1">
                           <div className="flex justify-between items-start">
                             <Link href={`/tasks/${task.id}`} className="flex-1">
@@ -255,13 +293,45 @@ export default function TasksPage() {
             </div>
           ))}
         </div>
+      ) : viewMode === 'board' && showCompleted ? (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
+          {filteredTasks.map((task) => (
+            <Card key={task.id} className="hover:border-gray-400 transition-colors">
+              <CardContent className="p-3 sm:p-4 space-y-2">
+                <div className="space-y-1">
+                  <Link href={`/tasks/${task.id}`}>
+                    <h4 className="font-medium text-sm hover:text-gray-600 transition-colors">{task.title}</h4>
+                  </Link>
+                  <p className="text-xs text-gray-600">
+                    {task.project?.name}
+                    {task.project?.client_name && ` (${task.project.client_name})`}
+                  </p>
+                </div>
+                <div className="flex items-center justify-between text-xs text-gray-600">
+                  <div className="flex items-center gap-1">
+                    <Calendar className="h-3 w-3" />
+                    <span>完了: {task.updated_at ? new Date(task.updated_at).toLocaleDateString('ja-JP') : '不明'}</span>
+                  </div>
+                  <div className="flex gap-1">
+                    <button
+                      onClick={() => task.id && handleStatusChange(task.id, 'todo')}
+                      className="text-xs px-2 py-0.5 bg-gray-100 hover:bg-gray-200 rounded transition-colors"
+                    >
+                      再開
+                    </button>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
       ) : (
-        <div className="space-y-3">
+        <div className="space-y-2 sm:space-y-3">
           {filteredTasks.map((task) => (
             <Card key={task.id} className="hover:border-gray-400 transition-colors group">
-              <CardContent className="p-4">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-4 flex-1">
+              <CardContent className="p-3 sm:p-4">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                  <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 flex-1">
                     <div className="flex items-center gap-2">
                       <select
                         value={task.status}
@@ -298,20 +368,20 @@ export default function TasksPage() {
                       </div>
                     </div>
                   </div>
-                  <div className="flex items-center gap-6">
-                    <div className="text-sm text-gray-600">
+                  <div className="flex flex-wrap items-center gap-3 sm:gap-6">
+                    <div className="text-xs sm:text-sm text-gray-600">
                       <div className="flex items-center gap-1">
                         <User className="h-3 w-3" />
                         <span>{task.assignee || '未割当'}</span>
                       </div>
                     </div>
-                    <div className="text-sm text-gray-600">
+                    <div className="text-xs sm:text-sm text-gray-600">
                       <div className="flex items-center gap-1">
                         <Calendar className="h-3 w-3" />
                         <span>{task.due_date ? new Date(task.due_date).toLocaleDateString('ja-JP') : '期日なし'}</span>
                       </div>
                     </div>
-                    <div className="opacity-0 group-hover:opacity-100 transition-opacity flex gap-1">
+                    <div className="flex gap-1 ml-auto sm:ml-0 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity">
                       <Link href={`/tasks/${task.id}`}>
                         <button className="p-1 hover:bg-gray-100 rounded">
                           <Eye className="h-3 w-3" />

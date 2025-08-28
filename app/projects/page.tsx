@@ -9,8 +9,7 @@ import { DeleteConfirmationModal } from '@/components/ui/delete-confirmation-mod
 import { getProjects, deleteProject, type Project } from '@/lib/supabase/projects'
 import { 
   Plus, 
-  Search, 
-  MoreVertical,
+  Search,
   ExternalLink,
   Edit,
   Trash2,
@@ -126,37 +125,38 @@ export default function ProjectsPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-center">
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
         <div>
-          <h1 className="text-3xl font-bold">プロジェクト</h1>
-          <p className="text-gray-600 mt-1">プロジェクトの管理と進捗追跡</p>
+          <h1 className="text-2xl sm:text-3xl font-bold">プロジェクト</h1>
+          <p className="text-sm sm:text-base text-gray-600 mt-1">プロジェクトの管理と進捗追跡</p>
         </div>
-        <Button className="flex items-center gap-2" onClick={() => {
+        <Button className="flex items-center justify-center gap-2 w-full sm:w-auto" onClick={() => {
           setSelectedProject(undefined)
           setIsFormOpen(true)
         }}>
           <Plus className="h-4 w-4" />
-          新規プロジェクト
+          <span className="hidden sm:inline">新規プロジェクト</span>
+          <span className="sm:hidden">新規作成</span>
         </Button>
       </div>
 
-      <div className="flex gap-4 items-center">
-        <div className="relative flex-1 max-w-md">
+      <div className="flex flex-col gap-3">
+        <div className="relative w-full">
           <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
           <Input
             type="search"
             placeholder="プロジェクトを検索..."
-            className="pl-10"
+            className="pl-10 w-full"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
         </div>
-        <div className="flex gap-2">
+        <div className="flex flex-wrap gap-2">
           {['すべて', '企画中', '開発中', '本番稼働中', '保守中'].map(status => (
             <button
               key={status}
               onClick={() => setFilterStatus(status)}
-              className={`px-3 py-1 text-sm capitalize transition-colors ${
+              className={`px-3 py-1 text-xs sm:text-sm capitalize transition-colors rounded-md ${
                 filterStatus === status 
                   ? 'bg-gray-900 text-white' 
                   : 'bg-white text-gray-600 hover:bg-gray-100 border border-black'
@@ -177,28 +177,27 @@ export default function ProjectsPage() {
           <p className="text-gray-600">プロジェクトが見つかりません</p>
         </div>
       ) : (
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 md:gap-6">
         {filteredProjects.map((project) => (
           <Card key={project.id} className="hover:border-gray-400 transition-colors">
-            <CardHeader>
+            <CardHeader className="pb-3">
               <div className="flex justify-between items-start">
-                <div className="space-y-1">
-                  <CardTitle className="text-lg flex items-center gap-2">
-                    <FolderOpen className="h-4 w-4" />
-                    {project.name}
+                <div className="space-y-1 flex-1">
+                  <CardTitle className="text-base sm:text-lg flex items-center gap-2">
+                    <FolderOpen className="h-4 w-4 flex-shrink-0" />
+                    <span className="line-clamp-1">{project.name}</span>
                   </CardTitle>
-                  <p className="text-sm text-gray-600">{project.client_name || '未設定'}</p>
+                  <p className="text-xs sm:text-sm text-gray-600">{project.client_name || '未設定'}</p>
                 </div>
-                <button className="text-gray-400 hover:text-gray-600">
-                  <MoreVertical className="h-5 w-5" />
-                </button>
               </div>
             </CardHeader>
-            <CardContent className="space-y-4">
-              <p className="text-sm text-gray-600 line-clamp-2">{project.description}</p>
+            <CardContent className="space-y-3 pt-0">
+              {project.description && (
+                <p className="text-xs sm:text-sm text-gray-600 line-clamp-2">{project.description}</p>
+              )}
               
-              <div className="flex justify-between items-center">
-                <span className={`text-xs px-2 py-1 rounded ${getStatusColor(project.status)}`}>
+              <div className="flex flex-wrap gap-2 items-center">
+                <span className={`text-xs px-2 py-0.5 rounded ${getStatusColor(project.status)}`}>
                   {getStatusLabel(project.status)}
                 </span>
                 <span className={`text-xs font-medium ${getPriorityColor(project.priority)}`}>
@@ -206,51 +205,51 @@ export default function ProjectsPage() {
                 </span>
               </div>
 
-              <div className="space-y-2">
-                <div className="flex justify-between text-sm">
+              <div className="space-y-1">
+                <div className="flex justify-between text-xs sm:text-sm">
                   <span className="text-gray-600">進捗</span>
                   <span className="font-medium">{project.progress || 0}%</span>
                 </div>
-                <div className="w-full bg-gray-200 rounded-full h-2">
+                <div className="w-full bg-gray-200 rounded-full h-1.5 sm:h-2">
                   <div 
-                    className="bg-gray-900 h-2 rounded-full transition-all"
+                    className="bg-gray-900 h-1.5 sm:h-2 rounded-full transition-all"
                     style={{ width: `${project.progress || 0}%` }}
                   />
                 </div>
               </div>
 
-              <div className="text-sm text-gray-600">
-                <p>{project.start_date || '開始日未定'} - {project.end_date || '終了日未定'}</p>
+              <div className="text-xs sm:text-sm text-gray-600">
+                <p className="truncate">{project.start_date || '開始日未定'} - {project.end_date || '終了日未定'}</p>
               </div>
 
-              <div className="flex gap-2 pt-2 border-t border-black">
-                <Link href={`/projects/${project.id}`}>
-                  <Button variant="ghost" size="sm" className="flex items-center gap-1 text-xs">
+              <div className="flex flex-wrap gap-1 pt-2 border-t border-gray-200">
+                <Link href={`/projects/${project.id}`} className="flex-1 sm:flex-initial">
+                  <Button variant="ghost" size="sm" className="flex items-center justify-center gap-1 text-xs w-full sm:w-auto px-2 py-1">
                     <Eye className="h-3 w-3" />
-                    詳細
+                    <span className="hidden sm:inline">詳細</span>
                   </Button>
                 </Link>
                 {project.production_url && (
-                  <a href={project.production_url} target="_blank" rel="noopener noreferrer">
-                    <Button variant="ghost" size="sm" className="flex items-center gap-1 text-xs">
+                  <a href={project.production_url} target="_blank" rel="noopener noreferrer" className="flex-1 sm:flex-initial">
+                    <Button variant="ghost" size="sm" className="flex items-center justify-center gap-1 text-xs w-full sm:w-auto px-2 py-1">
                       <ExternalLink className="h-3 w-3" />
-                      サイト
+                      <span className="hidden sm:inline">サイト</span>
                     </Button>
                   </a>
                 )}
-                <Button variant="ghost" size="sm" className="flex items-center gap-1 text-xs" onClick={() => {
+                <Button variant="ghost" size="sm" className="flex items-center justify-center gap-1 text-xs flex-1 sm:flex-initial px-2 py-1" onClick={() => {
                   setSelectedProject(project)
                   setIsFormOpen(true)
                 }}>
                   <Edit className="h-3 w-3" />
-                  編集
+                  <span className="hidden sm:inline">編集</span>
                 </Button>
                 <Button variant="ghost" size="sm" 
-                  className="flex items-center gap-1 text-xs text-gray-900 hover:text-gray-700"
+                  className="flex items-center justify-center gap-1 text-xs text-gray-900 hover:text-gray-700 flex-1 sm:flex-initial px-2 py-1"
                   onClick={() => setDeleteModal({ open: true, project })}
                 >
                   <Trash2 className="h-3 w-3" />
-                  削除
+                  <span className="hidden sm:inline">削除</span>
                 </Button>
               </div>
             </CardContent>
