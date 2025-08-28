@@ -18,7 +18,7 @@ export interface Client {
 export async function getClients() {
   const supabase = createSupabaseClient()
   
-  const TABLE_NAME = 'clients_v3' // v3に変更（status問題を回避）
+  const TABLE_NAME = 'clients_v2' // v3に変更（status問題を回避）
   
   const { data, error } = await supabase
     .from(TABLE_NAME)
@@ -36,7 +36,7 @@ export async function getClients() {
 export async function getClient(id: string) {
   const supabase = createSupabaseClient()
   
-  const TABLE_NAME = 'clients_v3'
+  const TABLE_NAME = 'clients_v2'
   
   const { data, error } = await supabase
     .from(TABLE_NAME)
@@ -55,7 +55,7 @@ export async function getClient(id: string) {
 export async function createClient(client: Omit<Client, 'id' | 'created_at' | 'updated_at'>) {
   const supabase = createSupabaseClient()
   
-  const TABLE_NAME = 'clients_v3'
+  const TABLE_NAME = 'clients_v2'
   
   const { data: { user } } = await supabase.auth.getUser()
   
@@ -98,7 +98,7 @@ export async function createClient(client: Omit<Client, 'id' | 'created_at' | 'u
 export async function updateClient(id: string, client: Partial<Client>) {
   const supabase = createSupabaseClient()
   
-  const TABLE_NAME = 'clients_v3'
+  const TABLE_NAME = 'clients_v2'
   
   // v3テーブルではstatusフィールドの問題はないはずだが、念のため確認
   console.log('Update - Original client data:', client)
@@ -132,7 +132,7 @@ export async function updateClient(id: string, client: Partial<Client>) {
 export async function deleteClient(id: string) {
   const supabase = createSupabaseClient()
   
-  const TABLE_NAME = 'clients_v3'
+  const TABLE_NAME = 'clients_v2'
   
   const { error } = await supabase
     .from(TABLE_NAME)
