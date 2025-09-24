@@ -34,13 +34,11 @@ export async function middleware(request: NextRequest) {
 
   // ルートページへのアクセス時の処理
   if (request.nextUrl.pathname === '/') {
-    if (user) {
-      // ログイン済みの場合はダッシュボードへリダイレクト
-      return NextResponse.redirect(new URL('/dashboard', request.url))
-    } else {
+    if (!user) {
       // 未ログインの場合はログインページへリダイレクト
       return NextResponse.redirect(new URL('/auth/login', request.url))
     }
+    // ログイン済みの場合はそのままルートページを表示
   }
 
   // 保護されたルートへのアクセス時の処理
@@ -50,7 +48,7 @@ export async function middleware(request: NextRequest) {
 
   // ログイン済みユーザーが認証ページにアクセスした場合
   if (user && request.nextUrl.pathname.startsWith('/auth')) {
-    return NextResponse.redirect(new URL('/dashboard', request.url))
+    return NextResponse.redirect(new URL('/', request.url))
   }
 
   return response

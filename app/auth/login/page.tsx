@@ -30,7 +30,7 @@ export default function LoginPage() {
       if (error) {
         setError(error.message)
       } else {
-        router.push('/dashboard')
+        router.push('/')
       }
     } catch {
       setError('予期しないエラーが発生しました')

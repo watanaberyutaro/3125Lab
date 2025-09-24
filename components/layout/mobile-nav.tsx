@@ -2,10 +2,10 @@
 
 import { useState } from 'react'
 import { usePathname, useRouter } from 'next/navigation'
-import { 
-  Home, 
-  FolderOpen, 
-  CheckSquare, 
+import {
+  Home,
+  FolderOpen,
+  CheckSquare,
   Calendar,
   Menu,
   X,
@@ -13,23 +13,25 @@ import {
   FileText,
   DollarSign,
   Settings,
-  LogOut
+  LogOut,
+  Globe
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { createClient } from '@/lib/supabase/client'
 
 const mobileNavigation = [
-  { name: 'ホーム', href: '/dashboard', icon: Home },
+  { name: 'ホーム', href: '/', icon: Home },
   { name: 'プロジェクト', href: '/projects', icon: FolderOpen },
   { name: 'タスク', href: '/tasks', icon: CheckSquare },
   { name: 'カレンダー', href: '/calendar', icon: Calendar },
 ]
 
 const menuItems = [
-  { name: 'ダッシュボード', href: '/dashboard', icon: Home },
+  { name: 'ダッシュボード', href: '/', icon: Home },
   { name: 'プロジェクト', href: '/projects', icon: FolderOpen },
   { name: 'クライアント', href: '/clients', icon: Users },
   { name: 'タスク', href: '/tasks', icon: CheckSquare },
+  { name: 'ドメイン', href: '/domains', icon: Globe },
   { name: 'ドキュメント', href: '/documents', icon: FileText },
   { name: '財務管理', href: '/finance', icon: DollarSign },
   { name: 'カレンダー', href: '/calendar', icon: Calendar },
