@@ -21,6 +21,7 @@ import {
   Wallet
 } from 'lucide-react'
 import Link from 'next/link'
+import { InfrastructureSection } from '@/components/projects/infrastructure-section'
 
 export default function ProjectDetailPage() {
   const params = useParams()
@@ -435,7 +436,7 @@ export default function ProjectDetailPage() {
                     </div>
                   </div>
                 )}
-                
+
                 {project.start_date && (
                   <div className="flex items-start gap-2">
                     <div className="w-2 h-2 bg-gray-500 rounded-full mt-1.5"></div>
@@ -447,7 +448,7 @@ export default function ProjectDetailPage() {
                     </div>
                   </div>
                 )}
-                
+
                 {project.end_date && (
                   <div className="flex items-start gap-2">
                     <div className={`w-2 h-2 rounded-full mt-1.5 ${
@@ -466,6 +467,9 @@ export default function ProjectDetailPage() {
           </Card>
         </div>
       </div>
+
+      {/* インフラストラクチャ情報セクション */}
+      {project.id && <InfrastructureSection projectId={project.id} />}
     </div>
   )
 }
