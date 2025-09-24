@@ -32,15 +32,6 @@ export async function middleware(request: NextRequest) {
 
   const { data: { user } } = await supabase.auth.getUser()
 
-  // ルートページへのアクセス時の処理
-  if (request.nextUrl.pathname === '/') {
-    if (!user) {
-      // 未ログインの場合はログインページへリダイレクト
-      return NextResponse.redirect(new URL('/auth/login', request.url))
-    }
-    // ログイン済みの場合はそのままルートページを表示
-  }
-
   // 保護されたルートへのアクセス時の処理
   if (!user && !request.nextUrl.pathname.startsWith('/auth')) {
     return NextResponse.redirect(new URL('/auth/login', request.url))
@@ -56,6 +47,6 @@ export async function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
-    '/((?!api|_next/static|_next/image|favicon.ico|test-supabase|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
+    '/((?!api|_next/static|_next/image|favicon.ico|sw.js|manifest.json|icon-|apple-touch-icon|test-supabase|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
   ],
 }

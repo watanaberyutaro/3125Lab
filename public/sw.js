@@ -1,13 +1,13 @@
-const CACHE_NAME = '3125lab-v1';
+const CACHE_NAME = '3125lab-v2'; // バージョンを上げて古いキャッシュをクリア
 const urlsToCache = [
   '/',
-  '/dashboard',
   '/projects',
   '/tasks',
   '/clients',
   '/calendar',
   '/finance',
   '/documents',
+  '/domains',
   '/settings'
 ];
 
