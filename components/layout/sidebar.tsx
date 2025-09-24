@@ -1,16 +1,17 @@
 'use client'
 
 import { usePathname } from 'next/navigation'
-import { 
-  Home, 
-  FolderOpen, 
-  Users, 
-  CheckSquare, 
+import {
+  Home,
+  FolderOpen,
+  Users,
+  CheckSquare,
   FileText,
   DollarSign,
   Calendar,
   Settings,
-  LogOut
+  LogOut,
+  Globe
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { createClient } from '@/lib/supabase/client'
@@ -23,6 +24,7 @@ const navigation = [
   { name: 'プロジェクト', href: '/projects', icon: FolderOpen },
   { name: 'クライアント', href: '/clients', icon: Users },
   { name: 'タスク', href: '/tasks', icon: CheckSquare },
+  { name: 'ドメイン', href: '/domains', icon: Globe },
   { name: 'ドキュメント', href: '/documents', icon: FileText },
   { name: '財務管理', href: '/finance', icon: DollarSign },
   { name: 'カレンダー', href: '/calendar', icon: Calendar },
