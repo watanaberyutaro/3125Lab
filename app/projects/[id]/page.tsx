@@ -21,7 +21,7 @@ import {
   Wallet
 } from 'lucide-react'
 import Link from 'next/link'
-import { InfrastructureSection } from '@/components/projects/infrastructure-section'
+// import { InfrastructureSection } from '@/components/projects/infrastructure-section' // 一時的に無効化
 
 export default function ProjectDetailPage() {
   const params = useParams()
@@ -468,8 +468,8 @@ export default function ProjectDetailPage() {
         </div>
       </div>
 
-      {/* インフラストラクチャ情報セクション */}
-      {project.id && <InfrastructureSection projectId={project.id} />}
+      {/* インフラストラクチャ情報セクション - 一時的に無効化 */}
+      {/* {project.id && <InfrastructureSection projectId={project.id} />} */}
     </div>
   )
 }

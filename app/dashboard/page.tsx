@@ -23,7 +23,7 @@ import { getTasks } from '@/lib/supabase/tasks'
 import type { Project } from '@/lib/supabase/projects'
 import type { Client } from '@/lib/supabase/clients'
 import type { TaskWithProject } from '@/lib/supabase/tasks'
-import { InfrastructureNotifications } from '@/components/dashboard/infrastructure-notifications'
+// import { InfrastructureNotifications } from '@/components/dashboard/infrastructure-notifications' // 一時的に無効化
 
 export default function DashboardPage() {
   const [projects, setProjects] = useState<Project[]>([])
@@ -331,8 +331,8 @@ export default function DashboardPage() {
         </Card>
       </div>
 
-      {/* インフラ更新通知セクション */}
-      <InfrastructureNotifications />
+      {/* インフラ更新通知セクション - 一時的に無効化 */}
+      {/* <InfrastructureNotifications /> */}
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <Card>
