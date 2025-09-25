@@ -20,7 +20,7 @@ import { LinkWithLoading } from '@/components/ui/link-with-loading'
 import { useLoading } from '@/hooks/use-loading'
 
 const navigation = [
-  { name: 'ダッシュボード', href: '/', icon: Home },
+  { name: 'ダッシュボード', href: '/dashboard', icon: Home },
   { name: 'プロジェクト', href: '/projects', icon: FolderOpen },
   { name: 'クライアント', href: '/clients', icon: Users },
   { name: 'タスク', href: '/tasks', icon: CheckSquare },

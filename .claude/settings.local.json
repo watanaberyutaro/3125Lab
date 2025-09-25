@@ -9,7 +9,10 @@
       "Bash(git push:*)",
       "Bash(xargs rm:*)",
       "Bash(find:*)",
-      "Bash(ls:*)"
+      "Bash(ls:*)",
+      "Bash(for dir in calendar clients documents domains finance projects settings tasks)",
+      "Bash(do mv /Users/watanaberyuutarou/Desktop/3125映像/myProject/3125Lab/app/(authenticated)/$dir /Users/watanaberyuutarou/Desktop/3125映像/myProject/3125Lab/app/)",
+      "Bash(done)"
     ],
     "deny": [],
     "ask": []

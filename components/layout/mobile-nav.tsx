@@ -20,14 +20,14 @@ import { cn } from '@/lib/utils'
 import { createClient } from '@/lib/supabase/client'
 
 const mobileNavigation = [
-  { name: 'ホーム', href: '/', icon: Home },
+  { name: 'ホーム', href: '/dashboard', icon: Home },
   { name: 'プロジェクト', href: '/projects', icon: FolderOpen },
   { name: 'タスク', href: '/tasks', icon: CheckSquare },
   { name: 'カレンダー', href: '/calendar', icon: Calendar },
 ]
 
 const menuItems = [
-  { name: 'ダッシュボード', href: '/', icon: Home },
+  { name: 'ダッシュボード', href: '/dashboard', icon: Home },
   { name: 'プロジェクト', href: '/projects', icon: FolderOpen },
   { name: 'クライアント', href: '/clients', icon: Users },
   { name: 'タスク', href: '/tasks', icon: CheckSquare },

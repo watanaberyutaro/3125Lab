@@ -39,7 +39,7 @@ export async function middleware(request: NextRequest) {
 
   // ログイン済みユーザーが認証ページにアクセスした場合
   if (user && request.nextUrl.pathname.startsWith('/auth')) {
-    return NextResponse.redirect(new URL('/', request.url))
+    return NextResponse.redirect(new URL('/dashboard', request.url))
   }
 
   return response

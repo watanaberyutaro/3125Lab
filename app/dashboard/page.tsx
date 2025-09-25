@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { AuthenticatedLayout } from '@/components/layout/authenticated-layout'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { cn } from '@/lib/utils'
 import {
@@ -191,7 +192,8 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="space-y-6">
+    <AuthenticatedLayout>
+      <div className="space-y-6">
       <div>
         <h1 className="text-3xl font-bold">ダッシュボード</h1>
         <p className="text-gray-600 mt-1">3125Labへようこそ</p>
@@ -384,6 +386,7 @@ export default function DashboardPage() {
           </CardContent>
         </Card>
       </div>
-    </div>
+      </div>
+    </AuthenticatedLayout>
   )
 }
