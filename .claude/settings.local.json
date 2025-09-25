@@ -12,7 +12,17 @@
       "Bash(ls:*)",
       "Bash(for dir in calendar clients documents domains finance projects settings tasks)",
       "Bash(do mv /Users/watanaberyuutarou/Desktop/3125映像/myProject/3125Lab/app/(authenticated)/$dir /Users/watanaberyuutarou/Desktop/3125映像/myProject/3125Lab/app/)",
-      "Bash(done)"
+      "Bash(done)",
+      "Bash(/Users/watanaberyuutarou/Desktop/3125映像/myProject/3125Lab/app/settings/layout.tsx )",
+      "Bash(/Users/watanaberyuutarou/Desktop/3125映像/myProject/3125Lab/app/tasks/layout.tsx )",
+      "Bash(/Users/watanaberyuutarou/Desktop/3125映像/myProject/3125Lab/app/domains/layout.tsx )",
+      "Bash(/Users/watanaberyuutarou/Desktop/3125映像/myProject/3125Lab/app/calendar/layout.tsx )",
+      "Bash(/Users/watanaberyuutarou/Desktop/3125映像/myProject/3125Lab/app/projects/layout.tsx )",
+      "Bash(/Users/watanaberyuutarou/Desktop/3125映像/myProject/3125Lab/app/dashboard/layout.tsx )",
+      "Bash(/Users/watanaberyuutarou/Desktop/3125映像/myProject/3125Lab/app/finance/layout.tsx )",
+      "Bash(/Users/watanaberyuutarou/Desktop/3125映像/myProject/3125Lab/app/documents/layout.tsx)",
+      "Bash(for dir in dashboard projects clients tasks domains documents finance calendar settings)",
+      "Bash(do)"
     ],
     "deny": [],
     "ask": []

@@ -2,7 +2,7 @@ import { Sidebar } from '@/components/layout/sidebar'
 import { Header } from '@/components/layout/header'
 import { MobileNav } from '@/components/layout/mobile-nav'
 
-export default function SettingsLayout({
+export default function MainLayout({
   children,
 }: {
   children: React.ReactNode
